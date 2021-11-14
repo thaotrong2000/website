@@ -1,0 +1,66 @@
+h1 {
+  margin: 0px;
+}
+
+ul,
+li {
+  margin: 0px;
+  list-style-type: none;
+}
+
+input {
+  outline: none;
+  border: none;
+}
+
+input:focus {
+  border-color: transparent !important;
+}
+
+.container-login100 {
+  height: 100vh;
+  background: linear-gradient(-135deg, #c850c0, #4158d0);
+}
+
+.wrap-login100 {
+  background: #fff;
+  border-radius: 10px;
+}
+
+.validate-form {
+  width: 100%;
+}
+
+.input100 {
+  color: #666666;
+  background: #e6e6e6;
+  height: 40px;
+  border-radius: 25px;
+}
+
+.input100:focus + .focus-input100 + .symbol-input100 {
+  color: #57b846;
+}
+
+.login100-form-btn {
+  width: 50%;
+  height: 50px;
+  border-radius: 25px;
+  transition: all 0.4s;
+}
+
+.login100-form {
+  width: 90%;
+}
+
+.back-to-home {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+}
+
+.back-to-login {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+}

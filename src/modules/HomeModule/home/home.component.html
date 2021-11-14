@@ -1,0 +1,135 @@
+<app-navbar
+  [checkLogin]="checkLogin"
+  (clickNewArticle)="checkDemo($event)"
+></app-navbar>
+
+<div class="contain d-flex">
+  <!-- Phần hiển thị News - sẽ được lấy từ 1 API bên ngoài -->
+  <div class="news-content d-none d-md-block p-4">
+    <div class="news-content-main">
+      <h2 class="news-on-internet">News</h2>
+      <app-article-news></app-article-news>
+      <app-article-news></app-article-news>
+      <app-article-news></app-article-news>
+      <app-article-news></app-article-news>
+    </div>
+  </div>
+
+  <!-- Phần hiển thị Articles và Tags - được lấy từ API backend -->
+  <div class="artilce-tag-content d-flex p-2" #someVar>
+    <!-- Phần hiển thị Articles -->
+    <div class="article-content p-2 pl-5 pr-5">
+      <div class="article-content-main" #mainScreen>
+        <ul
+          class="
+            nav nav-tabs
+            bg-white
+            justify-content-start
+            navbar-custom
+            d-flex
+            align-items-center
+            border-0
+          "
+        >
+          <li
+            class="nav-item"
+            *ngIf="checkLogin"
+            (click)="
+              checkStatusFeed = true; whenStatusFeed(); checkClickTag = false
+            "
+            [ngClass]="{
+              'click-feed-global': checkStatusFeed && !checkClickTag
+            }"
+          >
+            <a class="nav-link" href="#">Feed</a>
+          </li>
+          <li
+            class="nav-item mr-auto"
+            (click)="
+              checkStatusFeed = false;
+              whenStatusGlobal();
+              checkContent = 1;
+              checkClickTag = false
+            "
+            [ngClass]="{
+              'click-feed-global': !checkStatusFeed && !checkClickTag
+            }"
+          >
+            <a class="nav-link" href="#">Global</a>
+          </li>
+
+          <!-- Tạo bài viết mới -->
+          <li
+            class="nav-item btn btn-primary h-50 nav-item-create mr-2"
+            *ngIf="checkLogin"
+          >
+            <a
+              class="nav-link text-light m-0 p-0"
+              routerLink="/editor"
+              (click)="checkClickNew = true"
+              >Create Article</a
+            >
+          </li>
+        </ul>
+
+        <h4 *ngIf="displaySelectedTag" class="text-primary mt-3">
+          #{{ dataSeletectag }}
+        </h4>
+
+        <div class="display-articles" *ngIf="checkContent == 1">
+          <app-article-home
+            *ngFor="let article of Articles"
+            [nameAuthor]="article.author.username"
+            [srcImage]="article.author.image"
+            [title]="article.title"
+            [description]="article.description"
+            [body]="article.body"
+            [tag]="article.tagList"
+            [slug]="article.slug"
+            (seeDetails)="seeDetails($event)"
+            [checkLogin]="checkLogin"
+            [userNameCurrent]="userNameCurrent"
+            [following]="article.author.following"
+            [favorited]="article.favorited"
+            [tagSelected]="tagSelected"
+            [articlesBehavior]="articlesBehavior"
+          ></app-article-home>
+        </div>
+
+        <div class="display-news" *ngIf="checkContent == 2">news</div>
+        <div class="display-tags" *ngIf="checkContent == 3">tags</div>
+        <div #demo></div>
+      </div>
+    </div>
+
+    <!-- Phần hiển thị Tags -->
+    <div class="tag-content d-none d-md-block w-25 pl-3 pr-3 pt-0">
+      <div class="tag-content-main d-flex flex-column">
+        <h2 class="text-center mt-3 mb-3">Tags</h2>
+
+        <div class="d-flex flex-wrap">
+          <app-article-tags
+            *ngFor="let tag of tags"
+            [nameTag]="tag"
+            (click)="clickTag(tag)"
+            [checkTag]="checkTag"
+            [tagSelected]="tagSelected"
+          ></app-article-tags>
+        </div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+
+  <!--  -->
+</div>
+
+<alert *ngIf="checkCreatedSuccess" type="success" [dismissOnTimeout]="'3000'">
+  <strong>Well done!</strong>
+  <p>Successfully created</p>
+</alert>
+
+<!-- Hiển thị Dialog post article - Chỉ hiển thị khi chuyển sang: /editor -->
+<div [ngClass]="{ 'custom-dialog-create': checkClickNew }" class="p-3">
+  <router-outlet></router-outlet>
+</div>
